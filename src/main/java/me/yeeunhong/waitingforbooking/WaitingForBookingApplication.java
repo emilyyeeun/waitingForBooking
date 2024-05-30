@@ -9,3 +9,4 @@ public class WaitingForBookingApplication {
         SpringApplication.run(WaitingForBookingApplication.class, args);
     }
 }
+

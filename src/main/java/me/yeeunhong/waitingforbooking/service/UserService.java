@@ -15,18 +15,8 @@ public class UserService {
 
     public Long save(AddUserRequest dto) {
         return userRepository.save(User.builder()
-                .username(dto.getUsername())
+                .email(dto.getEmail())
                 .password(bCryptPasswordEncoder.encode(dto.getPassword()))
                 .build()).getId();
-    }
-
-    public User getUserbyUsername(String username) {
-        return userRepository.findByUsername(username)
-                .orElseThrow(() -> new IllegalArgumentException(username));
-    }
-
-    public User findByUserId(Long userId) {
-        return userRepository.findById(userId)
-                .orElseThrow(() -> new IllegalArgumentException("Could not find User"));
     }
 }
