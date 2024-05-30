@@ -1,31 +1,14 @@
 package me.yeeunhong.waitingforbooking.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
-import javax.persistence.*;
-import java.util.List;
-
-@Builder
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-@Entity
-public class Role {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
-
-    @Column
-    private String name;
-
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(
-            name = "role_privilege",
-            joinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "privilege_id", referencedColumnName = "id")
-    )
-    private List<Privilege> privileges;
+/*
+유저별로 다른 권한을 부여하기 위한 enum 클래스
+ */
+@Getter
+@RequiredArgsConstructor
+public enum Role {
+    ROLE_USER("사용자"), ROLE_ADMIN("관리자");
+    private final String label;
 }
