@@ -3,7 +3,11 @@ package me.yeeunhong.waitingforbooking.controller;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import me.yeeunhong.waitingforbooking.dto.SignInDto;
+import me.yeeunhong.waitingforbooking.dto.SignUpDto;
+import me.yeeunhong.waitingforbooking.dto.UserDto;
 import me.yeeunhong.waitingforbooking.jwt.JwtToken;
+import me.yeeunhong.waitingforbooking.jwt.SecurityUtil;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,7 +34,16 @@ public class UserController {
 
     @PostMapping("/test")
     public String test() {
-        return "success";
+       System.out.println("test");
+       log.info("test");
+       return SecurityUtil.getCurrentUsername();
+    }
+
+    @PostMapping("/sign-up")
+    public ResponseEntity<UserDto> signUp(@RequestBody SignUpDto signUpDto) {
+        UserDto savedMemberDto = userService.signUp(signUpDto);
+        log.info("username = {}, password = {}", signUpDto.getUsername(), signUpDto.getPassword());
+        return ResponseEntity.ok(savedMemberDto);
     }
 
 }

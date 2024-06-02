@@ -23,12 +23,12 @@ public class SecurityConfig {
 
     private final TokenProvider jwtTokenProvider;
 
-    @Bean
-    public WebSecurityCustomizer configure() {
-        return (web) -> web.ignoring()
-                .requestMatchers(toH2Console())
-                .antMatchers("/static/**");
-    }
+//    @Bean
+//    public WebSecurityCustomizer configure() {
+//        return (web) -> web.ignoring()
+//                .requestMatchers(toH2Console())
+//                .antMatchers("/static/**");
+//    }
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
@@ -41,6 +41,7 @@ public class SecurityConfig {
                 .and()
                 .authorizeHttpRequests()
                 // 해당 API에 대해서는 모든 요청을 허가
+                .antMatchers("/users/sign-up").permitAll()
                 .antMatchers("/users/sign-in").permitAll()
                 // USER 권한이 있어야 요청할 수 있음
                 .antMatchers("/users/test").hasRole("USER")
