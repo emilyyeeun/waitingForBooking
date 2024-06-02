@@ -23,32 +23,13 @@ public class SecurityConfig {
 
     private final TokenProvider jwtTokenProvider;
 
-//    @Bean
-//    public WebSecurityCustomizer configure() {
-//        return (web) -> web.ignoring()
-//                .requestMatchers(toH2Console())
-//                .antMatchers("/static/**");
-//    }
+    @Bean
+    public WebSecurityCustomizer configure() {
+        return (web) -> web.ignoring()
+                .requestMatchers(toH2Console())
+                .antMatchers("/static/**");
+    }
 
-    // 특정 HTTP 요청에 대한 웹 기반 보안 구성
-//    @Bean
-//    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-//        return http
-//                .authorizeRequests() // 인증, 인가 설정
-//                .antMatchers("/login", "/signup", "/user").permitAll()
-//                .anyRequest().authenticated()
-//                .and()
-//                .formLogin()// 폼 기반 로그인 설정
-//                .loginPage("/login")
-//                .defaultSuccessUrl("/login")
-//                .and()
-//                .logout() // 로그아웃 설정
-//                .logoutSuccessUrl("/login")
-//                .invalidateHttpSession(true)
-//                .and()
-//                .csrf().disable()
-//                .build();
-//    }
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity
@@ -60,9 +41,9 @@ public class SecurityConfig {
                 .and()
                 .authorizeHttpRequests()
                 // 해당 API에 대해서는 모든 요청을 허가
-                .antMatchers("/members/sign-in").permitAll()
+                .antMatchers("/users/sign-in").permitAll()
                 // USER 권한이 있어야 요청할 수 있음
-                .antMatchers("/members/test").hasRole("USER")
+                .antMatchers("/users/test").hasRole("USER")
                 // 이 밖에 모든 요청에 대해서 인증을 필요로 한다는 설정
                 .anyRequest().authenticated()
                 .and()

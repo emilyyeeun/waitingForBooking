@@ -22,7 +22,6 @@ public class UserController {
     public JwtToken signIn(@RequestBody SignInDto signInDto) {
         String username = signInDto.getUsername();
         String password = signInDto.getPassword();
-        System.out.println(username);
         JwtToken jwtToken = userService.signIn(username, password);
         log.info("request username = {}, password = {}", username, password);
         log.info("jwtToken accessToken = {}, refreshToken = {}", jwtToken.getAccessToken(), jwtToken.getRefreshToken());
