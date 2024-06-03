@@ -14,13 +14,11 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 public class SignUpDto {
-
     private String username;
     private String password;
     private List<String> roles = new ArrayList<>();
 
     public User toEntity(String encodedPassword, List<String> roles) {
-
         return User.builder()
                 .username(username)
                 .password(encodedPassword)

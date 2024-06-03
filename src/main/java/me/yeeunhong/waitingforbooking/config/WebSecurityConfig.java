@@ -2,33 +2,28 @@ package me.yeeunhong.waitingforbooking.config;
 
 import lombok.RequiredArgsConstructor;
 import me.yeeunhong.waitingforbooking.jwt.JwtAuthenticationFilter;
-import me.yeeunhong.waitingforbooking.jwt.TokenProvider;
+import me.yeeunhong.waitingforbooking.jwt.JwtTokenProvider;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-
-import static org.springframework.boot.autoconfigure.security.servlet.PathRequest.toH2Console;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @RequiredArgsConstructor
 @Configuration
-public class SecurityConfig {
+public class WebSecurityConfig {
 
-    private final TokenProvider jwtTokenProvider;
+    private final JwtTokenProvider jwtTokenProvider;
 
-//    @Bean
-//    public WebSecurityCustomizer configure() {
-//        return (web) -> web.ignoring()
-//                .requestMatchers(toH2Console())
-//                .antMatchers("/static/**");
-//    }
+    @Bean
+    public WebSecurityCustomizer webSecurityCustomizer() {
+        return (web) -> web.ignoring().requestMatchers(new AntPathRequestMatcher("/h2-console/**"));
+    }
+
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {

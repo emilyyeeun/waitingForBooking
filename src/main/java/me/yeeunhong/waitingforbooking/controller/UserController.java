@@ -34,16 +34,14 @@ public class UserController {
 
     @PostMapping("/test")
     public String test() {
-       System.out.println("test");
-       log.info("test");
        return SecurityUtil.getCurrentUsername();
     }
 
     @PostMapping("/sign-up")
     public ResponseEntity<UserDto> signUp(@RequestBody SignUpDto signUpDto) {
-        UserDto savedMemberDto = userService.signUp(signUpDto);
+        UserDto savedUserDto = userService.signUp(signUpDto);
         log.info("username = {}, password = {}", signUpDto.getUsername(), signUpDto.getPassword());
-        return ResponseEntity.ok(savedMemberDto);
+        return ResponseEntity.ok(savedUserDto);
     }
 
 }

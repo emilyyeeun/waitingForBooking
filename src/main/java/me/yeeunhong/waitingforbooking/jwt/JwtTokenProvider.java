@@ -21,11 +21,11 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @Component
-public class TokenProvider {
+public class JwtTokenProvider {
     private final Key key;
 
     // application.yml에서 secret 값 가져와서 key에 저장
-    public TokenProvider(@Value("${jwt.secret_key}") String secretKey) {
+    public JwtTokenProvider(@Value("${jwt.secret_key}") String secretKey) {
         byte[] keyBytes = Base64.decodeBase64(secretKey);
         this.key = Keys.hmacShaKeyFor(keyBytes);
     }
