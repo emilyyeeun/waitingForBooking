@@ -55,5 +55,27 @@ class UserControllerTest {
         assertThat(savedMemberDto.getUsername()).isEqualTo(signUpDto.getUsername());
     }
 
+    @Test
+    public void signInTest() {
+        userService.signUp(signUpDto);
+        SignInDto signInDto = new SignInDto(signUpDto.getUsername(), signUpDto.getPassword());
+
+        // 로그인 요청
+        JwtToken jwtToken = userService.signIn(signInDto.getUsername(), signInDto.getPassword());
+
+        // HttpHeaders 객체 생성 및 토큰 추가
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setBearerAuth(jwtToken.getAccessToken());
+        httpHeaders.setContentType(MediaType.APPLICATION_JSON);
+
+        log.info("httpHeaders = {}", httpHeaders);
+
+        // API 요청 설정
+        String url = "http://localhost:" + randomServerPort + "/users/test";
+        ResponseEntity<String> responseEntity = testRestTemplate.postForEntity(url, new HttpEntity<>(httpHeaders), String.class);
+        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(responseEntity.getBody()).isEqualTo(signInDto.getUsername());
+    }
+
 
 }
