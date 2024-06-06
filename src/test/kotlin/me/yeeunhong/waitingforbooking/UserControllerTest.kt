@@ -1,81 +1,70 @@
-package me.yeeunhong.waitingforbooking;
+package me.yeeunhong.waitingforbooking
 
-import lombok.extern.slf4j.Slf4j;
-import me.yeeunhong.waitingforbooking.dto.SignInDto;
-import me.yeeunhong.waitingforbooking.dto.SignUpDto;
-import me.yeeunhong.waitingforbooking.dto.UserDto;
-import me.yeeunhong.waitingforbooking.jwt.JwtToken;
-import me.yeeunhong.waitingforbooking.service.UserService;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.boot.test.web.server.LocalServerPort;
-import org.springframework.http.*;
+import me.yeeunhong.waitingforbooking.dto.SignInDto
+import me.yeeunhong.waitingforbooking.dto.SignUpDto
+import me.yeeunhong.waitingforbooking.dto.UserDto
+import me.yeeunhong.waitingforbooking.service.UserService
+import org.assertj.core.api.Assertions
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.boot.test.web.client.TestRestTemplate
+import org.springframework.boot.test.web.server.LocalServerPort
+import org.springframework.http.*
+import javax.transaction.Transactional
 
-import javax.transaction.Transactional;
-
-import static org.assertj.core.api.Assertions.assertThat;
-
-@Slf4j
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class UserControllerTest {
+    @Autowired
+    var userService: UserService? = null
 
     @Autowired
-    UserService userService;
-    @Autowired
-    TestRestTemplate testRestTemplate;
+    var testRestTemplate: TestRestTemplate? = null
+
     @LocalServerPort
-    int randomServerPort;
-
-    private SignUpDto signUpDto;
+    var randomServerPort = 0
+    private var signUpDto: SignUpDto? = null
 
     @BeforeEach
-    void beforeEach() {
-        // User 회원가입
+    fun beforeEach() {
         signUpDto = SignUpDto.builder()
                 .username("emilyyeeun@outlook.com")
                 .password("12345678")
-                .build();
+                .build()
     }
-
 
     @Transactional
     @Test
-    public void signUpTest() {
+    fun signUpTest() {
         // API 요청 설정
-        String url = "http://localhost:" + randomServerPort + "/users/sign-up";
-        ResponseEntity<UserDto> responseEntity = testRestTemplate.postForEntity(url, signUpDto, UserDto.class);
+        val url = "http://localhost:$randomServerPort/users/sign-up"
+        val responseEntity = testRestTemplate!!.postForEntity(url, signUpDto, UserDto::class.java)
 
         // 응답 검증
-        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
-        UserDto savedMemberDto = responseEntity.getBody();
-        assertThat(savedMemberDto.getUsername()).isEqualTo(signUpDto.getUsername());
+        Assertions.assertThat(responseEntity.statusCode).isEqualTo(HttpStatus.OK)
+        val savedMemberDto = responseEntity.body
+        Assertions.assertThat(savedMemberDto.username).isEqualTo(signUpDto!!.username)
     }
 
+    @Transactional
     @Test
-    public void signInTest() {
-        userService.signUp(signUpDto);
-        SignInDto signInDto = new SignInDto(signUpDto.getUsername(), signUpDto.getPassword());
+    fun signInTest() {
+        userService!!.signUp(signUpDto)
+        val signInDto = SignInDto(signUpDto!!.username, signUpDto!!.password)
 
         // 로그인 요청
-        JwtToken jwtToken = userService.signIn(signInDto.getUsername(), signInDto.getPassword());
+        val jwtToken = userService!!.signIn(signInDto.username, signInDto.password)
 
         // HttpHeaders 객체 생성 및 토큰 추가
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.setBearerAuth(jwtToken.getAccessToken());
-        httpHeaders.setContentType(MediaType.APPLICATION_JSON);
-
-        log.info("httpHeaders = {}", httpHeaders);
+        val httpHeaders = HttpHeaders()
+        httpHeaders.setBearerAuth(jwtToken.accessToken)
+        httpHeaders.contentType = MediaType.APPLICATION_JSON
 
         // API 요청 설정
-        String url = "http://localhost:" + randomServerPort + "/users/test";
-        ResponseEntity<String> responseEntity = testRestTemplate.postForEntity(url, new HttpEntity<>(httpHeaders), String.class);
-        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
-        assertThat(responseEntity.getBody()).isEqualTo(signInDto.getUsername());
+        val url = "http://localhost:$randomServerPort/users/test"
+        val responseEntity = testRestTemplate!!.postForEntity(url, HttpEntity<Any>(httpHeaders), String::class.java)
+        Assertions.assertThat(responseEntity.statusCode).isEqualTo(HttpStatus.OK)
+        Assertions.assertThat(responseEntity.body).isEqualTo(signInDto.username)
     }
-
-
 }
