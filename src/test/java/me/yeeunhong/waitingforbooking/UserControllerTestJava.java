@@ -74,5 +74,4 @@ class UserControllerTestJava {
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(responseEntity.getBody()).isEqualTo(signInDto.getUsername());
     }
-
 }

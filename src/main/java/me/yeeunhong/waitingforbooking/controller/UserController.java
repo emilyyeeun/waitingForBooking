@@ -18,7 +18,7 @@ import me.yeeunhong.waitingforbooking.service.UserService;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/users")
-public class UserController {
+public class UserController implements UserControllerInterface {
 
     private final UserService userService;
 
