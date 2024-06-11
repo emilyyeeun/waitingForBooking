@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @Component
-public class JwtTokenProvider {
+public class JwtTokenProvider implements JwtTokenProviderInterface {
     private final Key key;
 
     // application.yml에서 secret 값 가져와서 key에 저장
@@ -30,6 +30,7 @@ public class JwtTokenProvider {
         this.key = Keys.hmacShaKeyFor(keyBytes);
     }
 
+    @Override
     // Member 정보를 가지고 AccessToken, RefreshToken을 생성하는 메서드
     public JwtToken generateToken(Authentication authentication) {
         // 권한 가져오기
@@ -61,6 +62,7 @@ public class JwtTokenProvider {
                 .build();
     }
 
+    @Override
     // Jwt 토큰을 복호화하여 토큰에 들어있는 정보를 꺼내는 메서드
     public Authentication getAuthentication(String accessToken) {
         // Jwt 토큰 복호화
@@ -80,6 +82,7 @@ public class JwtTokenProvider {
         return new UsernamePasswordAuthenticationToken(principal, "", authorities);
     }
 
+    @Override
     // 토큰 정보를 검증하는 메서드
     public boolean validateToken(String token) {
         try {

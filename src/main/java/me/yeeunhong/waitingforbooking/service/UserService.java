@@ -23,7 +23,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Transactional
 @Slf4j
-public class UserService {
+public class UserService implements UserServiceInterface{
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
     private final JwtTokenProvider jwtTokenProvider;
     private final UserRepository userRepository;

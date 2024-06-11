@@ -15,16 +15,18 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @RequiredArgsConstructor
 @Configuration
-public class WebSecurityConfig {
+public class WebSecurityConfig implements WebSecurityConfigInterface {
 
     private final JwtTokenProvider jwtTokenProvider;
 
+    @Override
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
         return (web) -> web.ignoring().requestMatchers(new AntPathRequestMatcher("/h2-console/**"));
     }
 
 
+    @Override
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity
@@ -48,6 +50,7 @@ public class WebSecurityConfig {
     }
 
 
+    @Override
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
         return new BCryptPasswordEncoder();
