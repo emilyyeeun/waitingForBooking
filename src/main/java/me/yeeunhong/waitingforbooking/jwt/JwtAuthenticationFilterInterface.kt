@@ -8,5 +8,5 @@ import javax.servlet.ServletResponse
 
 interface JwtAuthenticationFilterInterface {
     @Throws(IOException::class, ServletException::class)
-    fun doFilter(request: ServletRequest?, response: ServletResponse?, chain: FilterChain?)
+    fun doFilter(request: ServletRequest, response: ServletResponse, chain: FilterChain)
 }
