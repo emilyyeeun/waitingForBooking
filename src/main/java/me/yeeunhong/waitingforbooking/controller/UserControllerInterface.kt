@@ -8,6 +8,6 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RequestBody
 
 interface UserControllerInterface {
-    fun signIn(@RequestBody signInDto: SignInDto?): JwtToken?
-    fun signUp(@RequestBody signUpDto: SignUpDto?): ResponseEntity<UserDto?>?
+    fun signIn(@RequestBody signInDto: SignInDto): JwtToken
+    fun signUp(@RequestBody signUpDto: SignUpDto): ResponseEntity<UserDto>
 }
