@@ -25,10 +25,8 @@ class UserController @Autowired constructor(private val userService: UserService
     }
     @PostMapping("/sign-in")
     override fun signIn(@RequestBody signInDto: SignInDto): JwtToken {
-        val username = signInDto.username
-        val password = signInDto.password
-        val jwtToken = userService.signIn(username, password)
-        log.info("request username = $username, password = $password")
+        val jwtToken = userService.signIn(signInDto.username, signInDto.password)
+        log.info("request username = ${signInDto.username}, password = ${signInDto.password}")
         log.info("jwtToken accessToken = $jwtToken!!.accessToken, refreshToken = $jwtToken!!.refreshToken")
         return jwtToken!!
     }

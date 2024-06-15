@@ -29,8 +29,9 @@ class UserControllerTest {
     @BeforeEach
     fun beforeEach() {
         signUpDto = SignUpDto(
-                "emilyyeeun@outlook.com",
-                "12345678")
+            "emilyyeeun@outlook.com",
+            "12345678"
+        )
     }
 
     @Transactional
