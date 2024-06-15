@@ -12,7 +12,9 @@ import javax.servlet.ServletResponse
 import javax.servlet.http.HttpServletRequest
 
 @RequiredArgsConstructor
-class JwtAuthenticationFilter(private val jwtTokenProvider: JwtTokenProvider) : GenericFilterBean(), JwtAuthenticationFilterInterface {
+class JwtAuthenticationFilter(
+    private val jwtTokenProvider: JwtTokenProvider
+) : GenericFilterBean(), JwtAuthenticationFilterInterface {
 
     @Throws(IOException::class, ServletException::class)
     override fun doFilter(request: ServletRequest, response: ServletResponse, chain: FilterChain) {

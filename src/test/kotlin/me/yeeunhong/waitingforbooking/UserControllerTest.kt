@@ -56,16 +56,16 @@ class UserControllerTest {
 
 
         // 로그인 요청
-        val jwtToken = userService!!.signIn(signInDto.username, signInDto.password)
+        val jwtToken = userService.signIn(signInDto.username, signInDto.password)
 
         // HttpHeaders 객체 생성 및 토큰 추가
         val httpHeaders = HttpHeaders()
-        httpHeaders.setBearerAuth(jwtToken?.accessToken)
+        httpHeaders.setBearerAuth(jwtToken.accessToken)
         httpHeaders.contentType = MediaType.APPLICATION_JSON
 
         // API 요청 설정
         val url = "http://localhost:$randomServerPort/users/test"
-        val responseEntity = testRestTemplate!!.postForEntity(url, HttpEntity<Any>(httpHeaders), String::class.java)
+        val responseEntity = testRestTemplate.postForEntity(url, HttpEntity<Any>(httpHeaders), String::class.java)
         Assertions.assertThat(responseEntity.statusCode).isEqualTo(HttpStatus.OK)
         Assertions.assertThat(responseEntity.body).isEqualTo(signInDto.username)
     }

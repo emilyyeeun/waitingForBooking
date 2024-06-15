@@ -4,14 +4,15 @@ import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
 import javax.persistence.*
+import kotlin.properties.Delegates
 
 @Entity
 @Table(name = "users")
 class User(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", updatable = false)
-    val id: Long? = null,
+    @Column(name = "id", nullable = false, updatable = false)
+    val id: Long,
 
     @Column(name = "username", unique = true, nullable = false)
     private var username: String,
@@ -27,12 +28,12 @@ class User(
     }
 
     class UserBuilder {
-        private var id: Long? = null
+        private var id : Long = 0;
         private lateinit var username: String
         private lateinit var password: String
         private var roles: List<String> = ArrayList()
 
-        fun id(id: Long?) = apply { this.id = id }
+        fun id(id: Long) = apply { this.id = id }
         fun username(username: String) = apply { this.username = username }
         fun password(password: String) = apply { this.password = password }
         fun roles(roles: List<String>) = apply { this.roles = roles }
