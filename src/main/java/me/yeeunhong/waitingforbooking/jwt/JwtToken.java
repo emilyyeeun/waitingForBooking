@@ -1,8 +1,5 @@
 package me.yeeunhong.waitingforbooking.jwt;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
 //
 //@Builder
 //@Data
