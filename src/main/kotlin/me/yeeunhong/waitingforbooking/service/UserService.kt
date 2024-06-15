@@ -1,6 +1,7 @@
 package me.yeeunhong.waitingforbooking.service
 
 import lombok.RequiredArgsConstructor
+import me.yeeunhong.waitingforbooking.domain.User
 import me.yeeunhong.waitingforbooking.dto.SignUpDto
 import me.yeeunhong.waitingforbooking.dto.UserDto
 import me.yeeunhong.waitingforbooking.jwt.JwtToken
@@ -17,7 +18,7 @@ import javax.transaction.Transactional
 @Service
 @RequiredArgsConstructor
 @Transactional
-open class UserService(
+open class UserService (
     private val authenticationManagerBuilder: AuthenticationManagerBuilder,
     private val jwtTokenProvider: JwtTokenProvider,
     private val userRepository: UserRepository,
@@ -25,7 +26,7 @@ open class UserService(
 ) : UserServiceInterface {
 
     @Transactional
-    override fun signIn(username: String?, password: String?): JwtToken? {
+    override fun signIn(username: String, password: String): JwtToken {
         // 1. username + password 를 기반으로 Authentication 객체 생성
         // 이때 authentication 은 인증 여부를 확인하는 authenticated 값이 false
         val authenticationToken = UsernamePasswordAuthenticationToken(username, password)
@@ -49,7 +50,33 @@ open class UserService(
         // Password 암호화
         val encodedPassword = passwordEncoder.encode(signUpDto.password)
         val roles: MutableList<String> = ArrayList()
-        roles.add("ROLE_USER") // USER 권한 부여
+        roles.add("ROLE_USER");
+
+//        val signUpUser : User = if (signUpDto.roles.contains("ROLE_ADMIN")) {
+//            roles.add("ROLE_ADMIN")
+//            signUpAdmin(signUpDto)
+//        } else {
+//            roles.add("ROLE_USER")
+//            signUpUser(signUpDto)
+//        }
+//        userRepository.save(signUpUser)
+
         return UserDto.toDto(userRepository.save(signUpDto.toEntity(encodedPassword, roles)))
     }
+
+//    private fun signUpUser(signUpDto: SignUpDto) : User {
+//        return User.builder()
+//            .username(signUpDto.username)
+//            .password(signUpDto.password)
+//            .roles(signUpDto.roles)
+//            .build()
+//    }
+//
+//    private fun signUpAdmin(signUpDto: SignUpDto) : User {
+//        return User.builder()
+//            .username(signUpDto.username)
+//            .password(signUpDto.password)
+//            .roles(signUpDto.roles)
+//            .build()
+//    }
 }

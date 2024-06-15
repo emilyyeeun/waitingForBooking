@@ -8,7 +8,7 @@ import javax.transaction.Transactional
 
 interface UserServiceInterface {
     @Transactional
-    fun signIn(username: String?, password: String?): JwtToken?
+    fun signIn(username: String, password: String): JwtToken
 
     @Transactional
     fun signUp(signUpDto: SignUpDto): UserDto?

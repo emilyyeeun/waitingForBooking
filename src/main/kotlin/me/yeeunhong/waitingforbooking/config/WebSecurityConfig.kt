@@ -16,7 +16,9 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher
 
 @RequiredArgsConstructor
 @Configuration
-open class WebSecurityConfig(private val jwtTokenProvider: JwtTokenProvider) : WebSecurityConfigInterface {
+open class WebSecurityConfig(
+    private val jwtTokenProvider: JwtTokenProvider
+) : WebSecurityConfigInterface {
 
     @Bean
     override fun webSecurityCustomizer(): WebSecurityCustomizer {

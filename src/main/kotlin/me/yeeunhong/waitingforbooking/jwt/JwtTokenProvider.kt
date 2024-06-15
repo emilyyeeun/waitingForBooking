@@ -1,11 +1,9 @@
 package me.yeeunhong.waitingforbooking.jwt
 
+import io.github.oshai.kotlinlogging.KotlinLogging
 import io.jsonwebtoken.*
 import io.jsonwebtoken.security.Keys
-import lombok.extern.slf4j.Slf4j
 import org.apache.tomcat.util.codec.binary.Base64
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.Authentication
@@ -20,12 +18,12 @@ import java.util.stream.Collectors
 
 
 @Component
-class JwtTokenProvider(@Value("\${jwt.secret_key}") secretKey: String?) :
+class JwtTokenProvider(@Value("\${jwt.secret_key}") secretKey: String) :
     JwtTokenProviderInterface {
     private val key: Key
 
     companion object {
-        private val log: Logger = LoggerFactory.getLogger(this::class.java);
+        private val logger = KotlinLogging.logger {}
     }
 
     // application.yml에서 secret 값 가져와서 key에 저장
@@ -95,15 +93,15 @@ class JwtTokenProvider(@Value("\${jwt.secret_key}") secretKey: String?) :
                 .parseClaimsJws(token)
             return true
         } catch (e: SecurityException) {
-            log.info("Invalid JWT Token", e)
+            logger.info(e) { "${"Invalid JWT Token"}" }
         } catch (e: MalformedJwtException) {
-            log.info("Invalid JWT Token", e)
+            logger.info(e) { "${"Invalid JWT Token"}" }
         } catch (e: ExpiredJwtException) {
-            log.info("Expired JWT Token", e)
+            logger.info(e) { "${"Expired JWT Token"}" }
         } catch (e: UnsupportedJwtException) {
-            log.info("Unsupported JWT Token", e)
+            logger.info(e) { "${"Unsupported JWT Token"}" }
         } catch (e: IllegalArgumentException) {
-            log.info("JWT claims string is empty.", e)
+            logger.info(e) { "${"JWT claims string is empty."}" }
         }
         return false
     }
