@@ -1,7 +1,6 @@
 package me.yeeunhong.waitingforbooking.service
 
 import lombok.RequiredArgsConstructor
-import me.yeeunhong.waitingforbooking.domain.User
 import me.yeeunhong.waitingforbooking.dto.SignUpDto
 import me.yeeunhong.waitingforbooking.dto.UserDto
 import me.yeeunhong.waitingforbooking.jwt.JwtToken
