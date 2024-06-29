@@ -13,8 +13,8 @@ class Store {
     var id: Long = 0
 
     @Column(name = "storeType", unique = true, nullable = false)
-    var storeType: StoreType ?= null
+    var storeType: StoreType = StoreType.RESTAURANT
 
     @Column(name = "storeName", nullable = false)
-    var storeName: String ?= null
+    var storeName: String = ""
 }

@@ -1,24 +1,27 @@
 package me.yeeunhong.waitingforbooking.service
 
+import lombok.RequiredArgsConstructor
 import me.yeeunhong.waitingforbooking.domain.Store
 import me.yeeunhong.waitingforbooking.labels.StoreType
 import me.yeeunhong.waitingforbooking.repository.StoreRepository
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Required
 import org.springframework.stereotype.Service
 import javax.transaction.Transactional
 
+
 @Service
 @Transactional
-open class StoreService (
-    private val storeRepository: StoreRepository
+open class StoreService @Autowired constructor (
+    private var storeRepository: StoreRepository
 ) {
 
     @Transactional
-    fun createStore(storeType: StoreType?, storeName: String?) : Store {
-        requireNotNull(storeType) { "storeType must not be null" }
-        requireNotNull(storeName) { "storeName must not be null" }
-        val store = Store()
-        store.storeType = storeType
-        store.storeName = storeName
+    fun createStore(storeType: StoreType, storeName: String) : Store {
+        val store = Store().apply {
+            this.storeType = storeType
+            this.storeName = storeName
+        }
         return storeRepository.save(store)
     }
 

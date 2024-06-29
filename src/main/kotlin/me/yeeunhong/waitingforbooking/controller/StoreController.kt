@@ -17,7 +17,7 @@ class StoreController(
     }
 
     @PostMapping("/stores")
-    fun createStore(@RequestBody storeRequest: StoreRequest): Store {
+    fun createStore(@RequestBody storeRequest: StoreRequest): Store? {
         val storeType = when (storeRequest.storeTypeInput) {
             "Restaurant" -> StoreType.RESTAURANT
             "Hairsalon" -> StoreType.HAIRSALON
@@ -25,7 +25,7 @@ class StoreController(
             else -> null
         }
 
-        return storeService.createStore(storeType, storeRequest.storeName)
+        return storeService.createStore(storeType!!, storeRequest.storeName)
     }
 
     @GetMapping("/stores/{storeId}")
